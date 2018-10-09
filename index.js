@@ -3,7 +3,8 @@ const methodOverride = require('method-override');
 const pg = require('pg');
 const cookieParser = require('cookie-parser')
 const sha256 = require('js-sha256');
-const SALT = "bananas are delicious";
+const SALT = "iam a pet owner";
+const PEPPER = "iam a vet";
 
 // Initialise postgres client
 const config = {
@@ -109,14 +110,14 @@ const ownerLoggedIn = (request, response) => {
 
 const petNew = (request, response) => {
     if (sha256(request.cookies['userName'] + request.cookies['userId'].toString() + SALT ) === request.cookies['loggedIn']) {
-        response.render('owner/pet', {userID: request.cookies['userId']});
+        response.render('owner/pet');
     } else {
-        response.send('Make sure you are logged in');
+        response.send('Please log into your owner account.');
     }
 };
 
 const petAdded = (request, response) => {
-    if (request.body.name != "" && request.cookies['userId']) {
+    if (request.cookies['userId']) {
         const queryString = 'INSERT INTO pet(name, type, gender, birthdate, weight, img, owner_id) VALUES($1, $2, $3, $4, $5, $6, $7);';
         const values = [request.body.name, request.body.type, request.body.gender, request.body.birthdate, request.body.weight, request.body.img, request.cookies['userId']];
         pool.query(queryString, values, (err, result) => {
@@ -127,7 +128,7 @@ const petAdded = (request, response) => {
             }
         });
     } else {
-        response.send('Ensure required fields are filled and/or you are logged in');
+        response.send('Please log into your owner account.');
     }
 };
 
@@ -170,15 +171,39 @@ const vetLoggedIn = (request, response) => {
         } else if (result.rows.length < 1){
             response.send('Try again');
         } else if (result.rows[0].password === hashedPassword && request.body.email === result.rows[0].email){
-            let currentSessionCookie = sha256(result.rows[0].email + result.rows[0].id.toString() + SALT);
+            let currentSessionCookie = sha256(result.rows[0].email + result.rows[0].id.toString() + PEPPER);
             response.cookie('loggedIn', currentSessionCookie);
-            response.cookie('vetName', result.rows[0].email);
-            response.cookie('vetId', result.rows[0].id);
+            response.cookie('userName', result.rows[0].email);
+            response.cookie('userId', result.rows[0].id);
             response.send('You are logged in');
         } else {
             response.send('Try again');
         }
     });
+};
+
+const fileNew = (request, response) => {
+    if (sha256(request.cookies['userName'] + request.cookies['userId'].toString() + PEPPER ) === request.cookies['loggedIn']) {
+        response.render('vet/file');
+    } else {
+        response.send('Please log into your owner account.');
+    }
+};
+
+const fileAdded = (request, response) => {
+    if (request.cookies['userId']) {
+        const queryString = 'INSERT INTO file(name, pet_id, date, vet_id) VALUES($1, $2, $3, $4);';
+        const values = [request.body.name, request.body.pet_id, request.body.date, request.cookies['userId']];
+        pool.query(queryString, values, (err, result) => {
+            if (err) {
+                console.log('query error:', err.stack);
+            } else {
+                response.send('File added');
+            }
+        });
+    } else {
+        response.send('Please log into your vet account.');
+    }
 };
 
 const logout = (request, response) => {
@@ -203,6 +228,9 @@ app.get('/owner/signup', ownerSignup);
 app.get('/owner/login', ownerLogin);
 app.post('/ownerlogin', ownerLoggedIn);
 app.post('/owner', ownerCreated);
+
+app.get('/vet/file', fileNew);
+app.post('/file', fileAdded);
 
 app.get('/vet/signup', vetSignup);
 app.get('/vet/login', vetLogin);
