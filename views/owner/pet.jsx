@@ -15,8 +15,6 @@ class NewPet extends React.Component {
             <option className="formOption" value="other" selected>other</option>
             <option className="formOption" value="dog">dog</option>
             <option className="formOption" value="cat">cat</option>
-            <option className="formOption" value="rabbit">rabbit</option>
-            <option className="formOption" value="bird">bird</option>
             </select></p>
             <p>Gender: <select className="formSelect" name="gender" required>
             <option className="formOption" value="unsure" selected>unsure</option>

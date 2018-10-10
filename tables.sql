@@ -31,10 +31,11 @@ CREATE TABLE IF NOT EXISTS file (
 	pet_id INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS patients (
+CREATE TABLE IF NOT EXISTS patient (
 	id SERIAL PRIMARY KEY,
 	vet_id INTEGER,
-	pet_id INTEGER
+	pet_id INTEGER,
+	owner_id INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS ownership (
