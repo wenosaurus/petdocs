@@ -8,16 +8,16 @@ const PEPPER = "iam a vet";
 
 // Initialise postgres client
 const config = {
-  user: 'wenvo',
-  host: '127.0.0.1',
-  database: 'petdocs',
-  port: 5432,
+    user: 'wenvo',
+    host: '127.0.0.1',
+    database: 'petdocs',
+    port: 5432,
 };
 
 const pool = new pg.Pool(config);
 
-pool.on('error', function (err) {
-  console.log('Idle client error', err.message, err.stack);
+pool.on('error', function(err) {
+    console.log('Idle client error', err.message, err.stack);
 });
 
 /**
@@ -57,7 +57,7 @@ const getRoot = (request, response) => {
 //  */
 
 const ownerSignup = (request, response) => {
-  response.render('owner/signup');
+    response.render('owner/signup');
 };
 
 const ownerCreated = (request, response) => {
@@ -77,7 +77,7 @@ const ownerCreated = (request, response) => {
 };
 
 const ownerLogin = (request, response) => {
-  response.render('owner/login');
+    response.render('owner/login');
 }
 
 const ownerLoggedIn = (request, response) => {
@@ -88,9 +88,9 @@ const ownerLoggedIn = (request, response) => {
         if (err) {
             console.error('Query error:', err.stack);
             response.send('Try again');
-        } else if (result.rows.length < 1){
+        } else if (result.rows.length < 1) {
             response.send('Try again');
-        } else if (result.rows[0].password === hashedPassword && request.body.email === result.rows[0].email){
+        } else if (result.rows[0].password === hashedPassword && request.body.email === result.rows[0].email) {
             let currentSessionCookie = sha256(result.rows[0].email + result.rows[0].id.toString() + SALT);
             response.cookie('loggedIn', currentSessionCookie);
             response.cookie('userName', result.rows[0].email);
@@ -104,12 +104,12 @@ const ownerLoggedIn = (request, response) => {
 
 // /**
 //  * ===================================
-//  * Vet
+//  * Pet
 //  * ===================================
 //  */
 
 const petNew = (request, response) => {
-    if (sha256(request.cookies['userName'] + request.cookies['userId'].toString() + SALT ) === request.cookies['loggedIn']) {
+    if (sha256(request.cookies['userName'] + request.cookies['userId'].toString() + SALT) === request.cookies['loggedIn']) {
         response.render('owner/pet');
     } else {
         response.send('Please log into your owner account.');
@@ -130,6 +130,34 @@ const petAdded = (request, response) => {
     } else {
         response.send('Please log into your owner account.');
     }
+};
+
+const petEdit = (request, response) => {
+    const queryString = 'SELECT * FROM pet WHERE id = ' + request.params['id'];
+    pool.query(queryString, (err, result) => {
+        if (err) {
+            console.error('Query error:', err.stack);
+        } else {
+            response.render('owner/editpet', { pet: result.rows[0] });
+        }
+    });
+};
+
+const petUpdated = (request, response) => {
+    let id = request.params['id'];
+    console.log(typeof(id));
+    const queryString = 'UPDATE "pet" SET "name"=($1), "type"=($2), "gender"=($3), "birthdate"=($4), "weight"=($5), "img"=($6) WHERE "id"=($7)';
+    const values = [request.body.name, request.body.type, request.body.gender, request.body.birthdate, request.body.weight, request.body.img, id];
+    console.log("MIDDLE");
+    // console.log(queryString);
+    pool.query(queryString, values, (err, result) => {
+        if (err) {
+            console.error('Query error:', err.stack);
+        } else {
+            response.send('Pet updated!');
+        }
+    });
+    console.log("ENDING");
 };
 
 // /**
@@ -168,9 +196,9 @@ const vetLoggedIn = (request, response) => {
         if (err) {
             console.error('Query error:', err.stack);
             response.send('Try again');
-        } else if (result.rows.length < 1){
+        } else if (result.rows.length < 1) {
             response.send('Try again');
-        } else if (result.rows[0].password === hashedPassword && request.body.email === result.rows[0].email){
+        } else if (result.rows[0].password === hashedPassword && request.body.email === result.rows[0].email) {
             let currentSessionCookie = sha256(result.rows[0].email + result.rows[0].id.toString() + PEPPER);
             response.cookie('loggedIn', currentSessionCookie);
             response.cookie('userName', result.rows[0].email);
@@ -182,8 +210,27 @@ const vetLoggedIn = (request, response) => {
     });
 };
 
+// const fileNew = (request, response) => {
+//     let id = request.params['id'];
+//     const queryString = 'SELECT pet.name FROM pet INNER JOIN relationship ON (relationship.pokemon_id = pokemon.id) WHERE relationship.user_id = ' + id + ';';
+//     pool.query(queryString, (err, result) => {
+//         if (err) {
+//             console.error('Query error:', err.stack);
+//         } else {
+//             console.log('Query result rows:', result.rows);
+//         }
+//         response.render( 'users/show', {relationship: result.rows} );
+//     });
+// };
+
+// /**
+//  * ===================================
+//  * File
+//  * ===================================
+//  */
+
 const fileNew = (request, response) => {
-    if (sha256(request.cookies['userName'] + request.cookies['userId'].toString() + PEPPER ) === request.cookies['loggedIn']) {
+    if (sha256(request.cookies['userName'] + request.cookies['userId'].toString() + PEPPER) === request.cookies['loggedIn']) {
         response.render('vet/file');
     } else {
         response.send('Please log into your owner account.');
@@ -221,7 +268,9 @@ const logout = (request, response) => {
 
 app.get('/', getRoot);
 
+app.put('/owner/pet/:id', petUpdated);
 app.get('/owner/pet', petNew);
+app.get('/owner/pet/:id/edit', petEdit);
 app.post('/pet', petAdded);
 
 app.get('/owner/signup', ownerSignup);
@@ -250,16 +299,15 @@ const server = app.listen(3000, () => console.log('~~~ Ahoy we go from the port 
 
 // Handles CTRL-C shutdown
 function shutDown() {
-  console.log('Recalling all ships to harbour...');
-  server.close(() => {
-    console.log('... all ships returned...');
-    pool.end(() => {
-      console.log('... all loot turned in!');
-      process.exit(0);
+    console.log('Recalling all ships to harbour...');
+    server.close(() => {
+        console.log('... all ships returned...');
+        pool.end(() => {
+            console.log('... all loot turned in!');
+            process.exit(0);
+        });
     });
-  });
 };
 
 process.on('SIGTERM', shutDown);
 process.on('SIGINT', shutDown);
-
