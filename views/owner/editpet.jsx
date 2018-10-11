@@ -26,10 +26,16 @@ class EditPet extends React.Component {
         return (
             <html>
             <head>
+            <title>PetDocs</title>
             </head>
             <body>
-            <h1>Edit {this.props.pet.name}</h1>
-            <div>
+            <header>
+            <h1>PetDocs</h1>
+            </header>
+            <nav>
+            <h2>Edit {this.props.pet.name}</h2>
+            </nav>
+            <main>
             <form className="form" method="POST" action={"/owner/pet/" + this.props.pet.id + "?_method=PUT"}>
             <p>Pet Name:
             <input className="formField" name="name" type="text" defaultValue={this.props.pet.name} /></p>
@@ -47,7 +53,11 @@ class EditPet extends React.Component {
             <p>Upload Photo: <input className="formField" name="img" type="text" defaultValue={this.props.pet.img} /></p>
             <p><input className="formButton" type="submit" value="Submit" /></p>
             </form>
-            </div>
+            </main>
+            <aside>
+            <p><a href={"/owner/home/" + this.props.pet.owner_id}>Home</a></p>
+            <p><a href="/logout">Logout</a></p>
+            </aside>
             </body>
             </html>
             );

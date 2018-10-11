@@ -47,7 +47,7 @@ app.engine('jsx', reactEngine);
  */
 
 const getRoot = (request, response) => {
-    response.send('Welcome to Petdoc');
+    response.render('home');
 };
 
 // /**
@@ -57,6 +57,7 @@ const getRoot = (request, response) => {
 //  */
 
 const ownerSignup = (request, response) => {
+    console.log(sha256('password'));
     response.render('owner/signup');
 };
 
@@ -94,7 +95,7 @@ const ownerLoggedIn = (request, response) => {
             response.cookie('loggedIn', currentSessionCookie);
             response.cookie('userName', result.rows[0].email);
             response.cookie('userId', result.rows[0].id);
-            response.send('You are logged in');
+            response.redirect('/owner/home/' + result.rows[0].id);
         } else {
             response.send('Try again');
         }
@@ -135,14 +136,13 @@ const ownerUpdated = (request, response) => {
 const ownerHome = (request, response) => {
     if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn']) {
         let id = request.params['id'];
-        const queryString = 'SELECT pet.name FROM pet INNER JOIN ownership ON (ownership.pet_id = pet.id) WHERE ownership.owner_id = ' + id + ';';
+        const queryString = 'SELECT pet.name, pet.id, pet.owner_id FROM pet INNER JOIN ownership ON (ownership.pet_id = pet.id) WHERE ownership.owner_id = ' + id + ';';
         pool.query(queryString, (err, result) => {
             if (err) {
                 console.error('Query error:', err.stack);
             } else {
-                console.log('Query result rows:', result.rows);
+                response.render('owner/home', { pet: result.rows });
             }
-            response.render('owner/home', { pet: result.rows });
         });
     } else {
         response.send('Please log into your owner account.');
@@ -157,7 +157,7 @@ const ownerHome = (request, response) => {
 
 const petNew = (request, response) => {
     if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn']) {
-        response.render('owner/pet');
+        response.render('owner/pet', { id: request.cookies['userId'] });
     } else {
         response.send('Please log into your owner account.');
     }
@@ -171,7 +171,7 @@ const petAdded = (request, response) => {
             if (err) {
                 console.log('query error:', err.stack);
             } else {
-                response.send('Pet added');
+                response.send('Pet added!');
             }
         });
     } else {
@@ -208,6 +208,42 @@ const petUpdated = (request, response) => {
         });
     } else {
         response.send('Please log into your owner account.');
+    }
+};
+
+const deletePet = (request, response) => {
+    if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn']) {
+        const queryString = 'SELECT * FROM pet WHERE id = ' + request.params['id'] + ';';
+        pool.query(queryString, (err, result) => {
+            if (err) {
+                console.error('Query error:', err.stack);
+            } else {
+                response.render('owner/deletepet', { pet: result.rows[0] });
+            }
+        });
+    } else {
+        response.send('Please log into your owner account.');
+    }
+};
+
+const removePet = (request, response) => {
+    if (request.cookies['loggedIn']) {
+        let html = `<html>`;
+        html += `<body>`;
+        html += `<p>Pet Deleted!</p>`;
+        html += `<p><a href=/vet/home/${request.cookies['userId']}Click here</a> to return home.</p>`;
+        html += `</body>`;
+        html += `</html>`;
+        const queryString = 'DELETE FROM pet WHERE id = ' + request.params['id'];
+        pool.query(queryString, (err, result) => {
+            if (err) {
+                console.log('Query error:', err.stack);
+            } else {
+                response.send(html);
+            }
+        });
+    } else {
+        response.send('Please log into your vet account.');
     }
 };
 
@@ -254,7 +290,7 @@ const vetLoggedIn = (request, response) => {
             response.cookie('loggedIn', currentSessionCookie);
             response.cookie('userName', result.rows[0].email);
             response.cookie('userId', result.rows[0].id);
-            response.send('You are logged in');
+            response.redirect('/vet/home/' + result.rows[0].id);
         } else {
             response.send('Try again');
         }
@@ -318,7 +354,7 @@ const vetHome = (request, response) => {
 
 const fileNew = (request, response) => {
     if (sha256(request.cookies['userName'] + request.cookies['userId'] + PEPPER) === request.cookies['loggedIn']) {
-        response.render('vet/file');
+        response.render('vet/file', { id: request.cookies['userId'] });
     } else {
         response.send('Please log into your vet account.');
     }
@@ -410,8 +446,11 @@ const logout = (request, response) => {
 
 app.get('/', getRoot);
 
-app.put('/owner/pet/:id', petUpdated);
+app.delete('/owner/pet/delete/:id', removePet);
+app.get('/owner/pet/:id/delete', deletePet);
 app.get('/owner/pet/:id/edit', petEdit);
+app.put('/owner/pet/:id', petUpdated);
+
 app.get('/owner/pet', petNew);
 
 
@@ -425,9 +464,9 @@ app.post('/owner', ownerCreated);
 app.post('/pet', petAdded);
 
 app.delete('/vet/file/delete/:id', removeFile);
-app.put('/vet/file/:id', fileUpdated);
+app.get('/vet/file/:id/delete', deleteFile);
 app.get('/vet/file/:id/edit', fileEdit);
-app.get('/vet/file/delete/:id', deleteFile);
+app.put('/vet/file/:id', fileUpdated);
 app.get('/vet/file', fileNew);
 app.post('/file', fileAdded);
 
