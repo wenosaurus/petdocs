@@ -57,7 +57,6 @@ const getRoot = (request, response) => {
 //  */
 
 const ownerSignup = (request, response) => {
-    console.log(sha256('password'));
     response.render('owner/signup');
 };
 
@@ -135,13 +134,12 @@ const ownerUpdated = (request, response) => {
 
 const ownerHome = (request, response) => {
     if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn']) {
-        let id = request.params['id'];
-        const queryString = 'SELECT pet.name, pet.id, pet.owner_id FROM pet INNER JOIN ownership ON (ownership.pet_id = pet.id) WHERE ownership.owner_id = ' + id + ';';
+        const queryString = 'SELECT pet.name, pet.id, pet.owner_id FROM pet INNER JOIN ownership ON (ownership.pet_id = pet.id) WHERE ownership.owner_id = ' + request.params['id'];
         pool.query(queryString, (err, result) => {
             if (err) {
                 console.error('Query error:', err.stack);
             } else {
-                response.render('owner/home', { pet: result.rows });
+                response.render('owner/home', { pet: result.rows, id: request.params['id'] });
             }
         });
     } else {
@@ -331,15 +329,14 @@ const vetUpdated = (request, response) => {
 
 const vetHome = (request, response) => {
     if (sha256(request.cookies['userName'] + request.params['id'] + PEPPER) === request.cookies['loggedIn']) {
-        let id = request.params['id'];
-        const queryString = 'SELECT * FROM file WHERE vet_id = ' + id + ';';
+        const queryString = 'SELECT * FROM file WHERE vet_id = ' + request.params['id'];
         pool.query(queryString, (err, result) => {
             if (err) {
                 console.error('Query error:', err.stack);
             } else {
                 console.log('Query result rows:', result.rows);
             }
-            response.render('vet/home', { file: result.rows });
+            response.render('vet/home', { file: result.rows, id: request.params['id'] });
         });
     } else {
         response.send('Please log into your vet account.');
@@ -409,26 +406,34 @@ const fileUpdated = (request, response) => {
 };
 
 const deleteFile = (request, response) => {
-    const queryString = 'SELECT * FROM file WHERE id = ' + request.params['id'] + ';';
-    pool.query(queryString, (err, result) => {
-        if (err) {
-            console.error('Query error:', err.stack);
-        } else {
-            response.render('vet/deletefile', { file: result.rows[0] });
-        }
-    });
+    if (sha256(request.cookies['userName'] + request.cookies['userId'] + PEPPER) === request.cookies['loggedIn']) {
+        const queryString = 'SELECT * FROM file WHERE id = ' + request.params['id'];
+        pool.query(queryString, (err, result) => {
+            if (err) {
+                console.error('Query error:', err.stack);
+            } else {
+                response.render('vet/deletefile', { file: result.rows[0] });
+            }
+        });
+    } else {
+        response.send('Please log into your vet account.');
+    }
 };
 
 const removeFile = (request, response) => {
-    let id = request.params['id'];
-    const queryString = 'DELETE FROM file WHERE id = ' + id + ';';
-    pool.query(queryString, (err, result) => {
-        if (err) {
-            console.log('Query error:', err.stack);
-        } else {
-            response.send("File deleted");
-        }
-    });
+    if (request.cookies['loggedIn']) {
+        let id = request.params['id'];
+        const queryString = 'DELETE FROM file WHERE id = ' + id + ';';
+        pool.query(queryString, (err, result) => {
+            if (err) {
+                console.log('Query error:', err.stack);
+            } else {
+                response.send("File deleted");
+            }
+        });
+    } else {
+        response.send('Please log into your vet account.');
+    }
 };
 
 const logout = (request, response) => {

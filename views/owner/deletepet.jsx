@@ -16,7 +16,7 @@ class petDelete extends React.Component {
             </nav>
             <main>
             <p>Are you sure you want to delete {this.props.pet.name}?</p>
-            <form className="form" method="POST" action={"/pet/file/delete" + this.props.pet.id + "?_method=DELETE"}>
+            <form className="form" method="POST" action={"/pet/file/delete/" + this.props.pet.id + "?_method=DELETE"}>
             <p><input className="formButton" type="submit" value="Yes" /></p>
             </form>
             </main>

@@ -24,7 +24,7 @@ class VetHome extends React.Component {
             <p><a href="/vet/file">Add File</a></p>
             </main>
             <aside>
-            <p><a href={"/vet/" + this.props.file[0].vet_id + "/edit"}>Account Setting</a></p>
+            <p><a href={"/vet/" + this.props.id + "/edit"}>Account Settings</a></p>
             <p><a href="/logout">Logout</a></p>
             </aside>
             </body>

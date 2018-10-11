@@ -16,13 +16,13 @@ class fileDelete extends React.Component {
             </nav>
             <main>
             <p>Are you sure you want to delete {this.props.file.name}?</p>
-            <form className="form" method="POST" action={"/vet/file/delete" + this.props.file.id + "?_method=DELETE"}>
+            <form className="form" method="POST" action={"/vet/file/delete/" + this.props.file.id + "?_method=DELETE"}>
             <p><input className="formButton" type="submit" value="Yes" /></p>
             </form>
             </main>
             <aside>
             <p><a href={"/vet/home/" + this.props.file.vet_id}>Home</a></p>
-            <p><a href={"/logout"}>Logout</a></p>
+            <p><a href="/logout">Logout</a></p>
             </aside>
             </body>
             </html>
