@@ -1,7 +1,12 @@
 var React = require("react");
 
-class fileDelete extends React.Component {
+class OwnerHome extends React.Component {
     render() {
+
+        let fileList = this.props.file.map(item => {
+            var fileDate = new Date(item.date).toISOString().slice(0, 10);
+            return <li>{fileDate} | {item.name}</li>;
+        })
         return (
             <html>
             <head>
@@ -12,16 +17,15 @@ class fileDelete extends React.Component {
             <h1>PetDocs</h1>
             </header>
             <nav>
-            <h2>Delete File</h2>
+            Search
             </nav>
             <main>
-            <p>Are you sure you want to delete your file?</p>
-            <form className="form" method="POST" action={"/vet/file/delete/" + this.props.file + "?_method=DELETE"}>
-            <p><input className="formButton" type="submit" value="Yes" /></p>
-            </form>
+            <ul>
+            {fileList}
+            </ul>
             </main>
             <aside>
-            <p><a href={"/vet/home/" + this.props.user}>Home</a></p>
+            <p><a href={"/owner/home/" + this.props.id}>Home</a></p>
             <p><a href="/logout">Logout</a></p>
             </aside>
             </body>
@@ -30,4 +34,4 @@ class fileDelete extends React.Component {
     }
 };
 
-module.exports = fileDelete;
+module.exports = OwnerHome;

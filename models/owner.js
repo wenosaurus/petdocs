@@ -23,16 +23,18 @@ module.exports = (dbPoolInstance) => {
         let email = input.email;
         const queryString = `SELECT * FROM owner WHERE email ='${email}'`;
         let hashedValue = sha256(input.password);
-
         dbPoolInstance.query(queryString, (err, result) => {
-
-            callback(err, hashedValue, result.rows[0]);
+            if( result.rows.length > 0){
+                callback(err, hashedValue, result.rows);
+            } else{
+                callback(err, hashedValue, false);
+            }
         });
     };
 
     const ownerHome = (cookies, callback) => {
         let cookieId = cookies['userId'];
-        const queryString = `SELECT pet.name, pet.id, pet.owner_id FROM pet INNER JOIN ownership ON (ownership.pet_id = pet.id) WHERE ownership.owner_id = ${cookieId}`;
+        const queryString = `SELECT * FROM pet WHERE owner_id = ${cookieId}`;
         dbPoolInstance.query(queryString, (err, result) => {
             callback(err, result);
         });

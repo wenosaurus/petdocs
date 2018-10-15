@@ -20,6 +20,7 @@ class fileEdit extends React.Component {
             <p>File: <input className="formField" name="name" type="text" defaultValue={this.props.file.name} /></p>
             <p>Date:<input className="formField" name="date" type="date" defaultValue={fileDate} /></p>
             <p>Pet ID: <input className="formField" name="pet_id" type="text" defaultValue={this.props.file.id} /></p>
+            <input name="id" type="hidden" value={this.props.file.id} />
             <p><input className="formButton" type="submit" value="Submit" /></p>
             </form>
             </main>

@@ -51,6 +51,7 @@ class EditPet extends React.Component {
             <p>Birthdate:<input className="formField" name="birthdate" type="date" defaultValue={petBirthdate} /></p>
             <p>Weight:<input className="formField" name="weight" type="text" defaultValue={this.props.pet.weight} /></p>
             <p>Upload Photo: <input className="formField" name="img" type="text" defaultValue={this.props.pet.img} /></p>
+            <input name="id" type="hidden" value={this.props.pet.id} />
             <p><input className="formButton" type="submit" value="Submit" /></p>
             </form>
             </main>

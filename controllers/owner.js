@@ -45,8 +45,10 @@ module.exports = (db) => {
             if (err) {
                 console.error('Query error:', err.stack);
                 response.send('Try again');
-            } else if (queryResult.password === hashedValue) {
-                let user = queryResult;
+            } else if (queryResult === false) {
+                response.send('Try again');
+            } else if (queryResult[0].password === hashedValue) {
+                let user = queryResult[0];
                 let currentSessionCookie = sha256(user.email + user.id + SALT);
                 response.cookie('loggedIn', currentSessionCookie);
                 response.cookie('userName', user.email);
@@ -65,7 +67,7 @@ module.exports = (db) => {
                 console.error('Query error:', err.stack);
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn'] && request.cookies['userId'] === request.params['id']) {
-                    response.render('owner/home', { pet: queryResult.rows, id: request.params['id'] });
+                    response.render('owner/home' , { pet: queryResult.rows, id: request.params['id'] });
                 } else {
                     response.send('Please log into your owner account.');
                 }

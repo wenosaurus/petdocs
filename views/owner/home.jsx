@@ -3,7 +3,7 @@ var React = require("react");
 class OwnerHome extends React.Component {
     render() {
         let petList = this.props.pet.map(item => {
-            return <li>{item.name} | <a href={"/owner/pet/" + item.id + "/edit"}>Edit</a> | <a href={"/owner/pet/" + item.id + "/delete"}>Delete</a></li>;
+            return <li>{item.name} | <a href={"/owner/pet/files/" + item.id}>Files</a> | <a href={"/owner/pet/" + item.id + "/edit"}>Edit</a> | <a href={"/owner/pet/" + item.id + "/delete"}>Delete</a></li>;
         })
         return (
             <html>

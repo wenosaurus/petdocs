@@ -2,8 +2,8 @@ const pg = require('pg');
 const owner = require('./models/owner');
 const pet = require('./models/pet');
 const vet = require('./models/vet');
+const file = require('./models/file');
 const url = require('url');
-
 
 var configs;
 
@@ -44,6 +44,7 @@ module.exports = {
   owner: owner(pool),
   pet: pet(pool),
   vet: vet(pool),
+  file: file(pool),
 
   //make queries directly from here
   queryInterface: (text, params, callback) => {

@@ -30,6 +30,7 @@ class NewPet extends React.Component {
             <p>Birthdate:<input className="formField" name="birthdate" type="date" /></p>
             <p>Weight:<input className="formField" name="weight" type="text" value="kg" /></p>
             <p>Upload Photo: <input className="formField" name="img" type="text" /></p>
+            <input name="owner_id" type="hidden" value={this.props.id} />
             <p><input className="formButton" type="submit" value="Submit" /></p>
             </form>
             </main>

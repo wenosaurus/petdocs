@@ -18,11 +18,12 @@ class EditVet extends React.Component {
             <form className="form" method="POST" action={"/vet/" + this.props.vet.id + "?_method=PUT"}>
             <p>Name: <input className="formField" name="name" type="text" defaultValue={this.props.vet.name} /></p>
             <p>E-mail:<input className="formField" name="email" type="email" defaultValue={this.props.vet.email} /></p>
-            <p>Password: <input className="formField" name="password" type="password" defaultValue={this.props.vet.password} /></p>
+            <input name="id" type="hidden" value={this.props.vet.id} />
             <p><input className="formButton" type="submit" value="Submit" /></p>
             </form>
             </main>
             <aside>
+            <p><a href={"/vet/password/" + this.props.vet.id}>Reset Password</a></p>
             <p><a href={"/vet/home/" + this.props.vet.id}>Home</a></p>
             <p><a href="/logout">Logout</a></p>
             </aside>
