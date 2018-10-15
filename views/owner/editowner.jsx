@@ -18,11 +18,12 @@ class EditOwner extends React.Component {
             <form className="form" method="POST" action={"/owner/" + this.props.owner.id + "?_method=PUT"}>
             <p>Name: <input className="formField" name="name" type="text" defaultValue={this.props.owner.name} /></p>
             <p>E-mail:<input className="formField" name="email" type="email" defaultValue={this.props.owner.email} /></p>
-            <p>Password: <input className="formField" name="password" type="password" defaultValue={this.props.owner.password} /></p>
+            <input name="id" type="hidden" value={this.props.owner.id} />
             <p><input className="formButton" type="submit" value="Submit" /></p>
             </form>
             </main>
             <aside>
+            <p><a href={"/owner/password/" + this.props.owner.id}>Reset Password</a></p>
             <p><a href={"/owner/home/" + this.props.owner.id}>Home</a></p>
             <p><a href="/logout">Logout</a></p>
             </aside>
