@@ -27,38 +27,45 @@ class EditPet extends React.Component {
             <html>
             <head>
             <title>PetDocs</title>
+            <link rel="stylesheet" href="/main.css" />
+            <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
             </head>
             <body>
             <header>
-            <h1>PetDocs</h1>
+            <div className='logo'>
+            <a href={"/owner/home/" + this.props.pet.owner_id}><img src="/images/logo.png" /></a>
+            </div>
+            <div className='login'>
+            <span className='loginButton'><a href="/logout">Logout</a></span>
+            </div>
             </header>
             <nav>
             <h2>Edit {this.props.pet.name}</h2>
             </nav>
             <main>
             <form className="form" method="POST" action={"/owner/pet/" + this.props.pet.id + "?_method=PUT"}>
-            <p>Pet Name:
-            <input className="formField" name="name" type="text" defaultValue={this.props.pet.name} /></p>
-            <p>Type of Animal:
-            <select className="formSelect" name="type">
+            <table>
+            <tr>
+            <td>Pet Name:</td><td><input className="formField" name="name" type="text" defaultValue={this.props.pet.name} /></td></tr>
+            <tr><td>Type of Animal:</td>
+            <td><select className="formSelect" name="type">
                 {typeList}
             </select>
-            </p>
-            <p>Gender:
+            </td></tr>
+            <tr><td>
+            Gender:</td>
+            <td>
             <select className="formSelect" name="gender">
                 {genderList}
-            </select></p>
-            <p>Birthdate:<input className="formField" name="birthdate" type="date" defaultValue={petBirthdate} /></p>
-            <p>Weight:<input className="formField" name="weight" type="text" defaultValue={this.props.pet.weight} /></p>
-            <p>Upload Photo: <input className="formField" name="img" type="text" defaultValue={this.props.pet.img} /></p>
+            </select></td></tr>
+            <tr><td>Birthdate:</td><td><input className="formField" name="birthdate" type="date" defaultValue={petBirthdate} /></td></tr>
+            <tr><td>Weight:</td><td><input className="formField" name="weight" type="text" defaultValue={this.props.pet.weight} /></td></tr>
+            <tr><td>Upload Photo:</td><td><input className="formField" name="img" type="text" defaultValue={this.props.pet.img} /></td></tr>
             <input name="id" type="hidden" value={this.props.pet.id} />
+            </table>
             <p><input className="formButton" type="submit" value="Submit" /></p>
             </form>
             </main>
-            <aside>
-            <p><a href={"/owner/home/" + this.props.pet.owner_id}>Home</a></p>
-            <p><a href="/logout">Logout</a></p>
-            </aside>
             </body>
             </html>
             );

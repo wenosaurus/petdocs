@@ -13,6 +13,7 @@ const db = require('./db');
 // Init express app
 const app = express();
 
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
@@ -42,15 +43,12 @@ app.get('/logout', (request, response) => {
     response.clearCookie('userId');
     response.send('You are logged out');
 });
-
 /**
  * ===================================
  * Listen to requests on port 3000
  * ===================================
  */
 const server = app.listen(3000, () => console.log('~~~ Ahoy we go from the port of 3000!!!'));
-
-
 
 // Handles CTRL-C shutdown
 function shutDown() {

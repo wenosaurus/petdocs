@@ -5,29 +5,33 @@ class OwnerHome extends React.Component {
 
         let fileList = this.props.file.map(item => {
             var fileDate = new Date(item.date).toISOString().slice(0, 10);
-            return <li>{fileDate} | {item.name}</li>;
+            return <tr><td>{fileDate}</td><td>{item.name}</td></tr>;
         })
         return (
             <html>
             <head>
             <title>PetDocs</title>
+            <link rel="stylesheet" href="/main.css" />
+            <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
             </head>
             <body>
             <header>
-            <h1>PetDocs</h1>
+            <div className='logo'>
+            <a href={"/owner/home/" + this.props.id}><img src="/images/logo.png" /></a>
+            </div>
+            <div className='login'>
+            <span className='loginButton'><a href="/logout">Logout</a></span>
+            </div>
             </header>
             <nav>
-            Search
+            <h2>File List</h2>
             </nav>
             <main>
-            <ul>
+            <table className='showList'>
+            <tr><td><h4>Files</h4></td><td></td></tr>
             {fileList}
-            </ul>
+            </table>
             </main>
-            <aside>
-            <p><a href={"/owner/home/" + this.props.id}>Home</a></p>
-            <p><a href="/logout">Logout</a></p>
-            </aside>
             </body>
             </html>
             );

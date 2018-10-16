@@ -6,27 +6,33 @@ class NewOwner extends React.Component {
             <html>
             <head>
             <title>PetDocs</title>
+            <link rel="stylesheet" href="/main.css" />
+            <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
             </head>
             <body>
             <header>
-            <h1>PetDocs</h1>
+            <div className='logo'>
+            <img src="/images/logo.png" />
+            </div>
+            <div className='login'>
+            <span className='loginButton'><a href="/vet/login">Vet Login</a></span>
+            </div>
             </header>
             <main>
-            <table width="100%">
-            <tr>
-            <td width="50%" align="center">
-            <h2>OWNER</h2>
-            <p><a href="/owner/login">Owner Login</a></p>
-            <p><a href="/owner/signup">Owner Signup</a></p>
-            </td>
-            <td width="50%" align="center">
-            <h2>VET</h2>
+            <nav>
+            <h1>Get all your pet's records in one place</h1>
+            <p><span className='loginButton'><a href="/owner/login">Login</a></span>
+            <span className='signupButton'><a href="/owner/signup">Signup</a></span></p>
+            </nav>
+            <aside>
+            <img src="images/sidephone.png" />
+            </aside>
+            </main>
+            <footer>
+            <h3>For Vets</h3>
             <p><a href="/vet/login">Vet Login</a></p>
             <p><a href="/vet/signup">Vet Signup</a></p>
-            </td>
-            </tr>
-            </table>
-            </main>
+            </footer>
             </body>
             </html>
             );

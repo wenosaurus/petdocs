@@ -3,30 +3,37 @@ var React = require("react");
 class VetHome extends React.Component {
     render() {
         let fileList = this.props.file.map(item => {
-            return <li>{item.name} | <a href={"/vet/file/" + item.id + "/edit"}>Edit</a> | <a href={"/vet/file/" + item.id + "/delete"}>Delete</a></li>;
+            return <tr><td>{item.name}</td> <td><a href={"/vet/file/" + item.id + "/edit"}>Edit</a></td> <td><a href={"/vet/file/" + item.id + "/delete"}>Delete</a></td></tr>;
         })
         return (
             <html>
             <head>
             <title>PetDocs</title>
+            <link rel="stylesheet" href="/main.css" />
+            <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
             </head>
             <body>
             <header>
-            <h1>PetDocs</h1>
+            <div className='logo'>
+            <a href="/"><img src="/images/logo.png" /></a>
+            </div>
+            <div className='login'>
+            <span className='loginButton'><a href="/logout">Logout</a></span>
+            </div>
             </header>
-            <nav>
-            Search
-            </nav>
             <main>
-            <ul>
+            <table className='showList'>
+            <tr>
+            <td><h4>File Name</h4></td>
+            <td></td>
+            <td></td>
+            <td></td></tr>
             {fileList}
-            </ul>
+            </table>
             <p><a href="/vet/file">Add File</a></p>
-            </main>
-            <aside>
             <p><a href={"/vet/" + this.props.id + "/edit"}>Account Settings</a></p>
             <p><a href="/logout">Logout</a></p>
-            </aside>
+            </main>
             </body>
             </html>
             );

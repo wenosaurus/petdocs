@@ -6,10 +6,17 @@ class fileDelete extends React.Component {
             <html>
             <head>
             <title>PetDocs</title>
+            <link rel="stylesheet" href="/main.css" />
+            <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
             </head>
             <body>
             <header>
-            <h1>PetDocs</h1>
+            <div className='logo'>
+            <a href={"/vet/home/" + this.props.user}><img src="/images/logo.png" /></a>
+            </div>
+            <div className='login'>
+            <span className='loginButton'><a href="/logout">Logout</a></span>
+            </div>
             </header>
             <nav>
             <h2>Delete File</h2>
@@ -20,10 +27,6 @@ class fileDelete extends React.Component {
             <p><input className="formButton" type="submit" value="Yes" /></p>
             </form>
             </main>
-            <aside>
-            <p><a href={"/vet/home/" + this.props.user}>Home</a></p>
-            <p><a href="/logout">Logout</a></p>
-            </aside>
             </body>
             </html>
             );
