@@ -1,23 +1,6 @@
 body {
 	background: url(./images/homebg.png) no-repeat top center;
 	font-family: 'Ubuntu', sans-serif;
-	margin: 0px auto;
-}
-
-header {
-	float: left;
-	display: block;
-	width: 100%;
-	margin: 0px;
-	padding: 10px;
-}
-
-.logo {
-	float: left;
-	display: inline-block;
-	width: 65%;
-	margin: 0px;
-	padding: 5px;
 }
 
 .login {
@@ -56,44 +39,18 @@ a {
 	text-decoration: inherit;
 }
 
-main {
-	float: left;
-	display: block;
-	color: white;
-	width: 100%;
-	margin: 0px;
-	padding: 5px 5px 5px 15px;
-}
-
-nav {
-	float: left;
-	display: inline-block;
-	width: 60%;
-	color: white;
-	margin: 0px;
-	padding: 5px 5px 5px 15px;
-}
-
-aside {
-	float: right;
-	display: inline-block;
-	width: 30%;
-	color: white;
-	margin: 0px 25px 25px 0px;
-	padding: 5px 5px 5px 15px;
-	text-align: right;
-}
-
 h1 {
 	font-size: 3.750rem;
-	font-weight:700;
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: 700;
 	color: white;
+	line-height: 4.5rem;
 }
 
 h2 {
 	font-size: 2.750rem;
 	font-weight:700;
-	color: white;
+	color: #fff !important;
 }
 
 h3 {
@@ -141,12 +98,47 @@ h4 {
 	border-radius: 10px;
 }
 
-footer {
-	float: left;
+aside {
 	background: white;
-	display: block;
 	width: 100%;
 	margin: 0px;
 	padding: 20px;
 	text-align: center;
+}
+
+footer {
+	background: #353854;
+	width: 100%;
+	margin: 0px;
+	padding: 20px;
+	text-align: center;
+	color: #b5b5c8;
+	font-size: smaller;
+}
+
+.scrolldown{
+  left: 48.5%;
+  bottom: 10%;
+  width: 40px;
+  height: 40px;
+  line-height: 37px;
+  background: #f4f5f9;
+  border-radius: 50%;
+  text-align: center;
+}
+.scrolldown a i{
+    color:#e74c3c;
+}
+
+#middle {
+	margin: 75px 0 75px 0;
+}
+
+#main {
+	margin: 20px 0 10px 0;
+}
+
+#navButtons {
+	margin-left: 5px;
+	margin-right: 5px;
 }

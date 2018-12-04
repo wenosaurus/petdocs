@@ -25,11 +25,9 @@ module.exports = (db) => {
                     response.cookie('loggedIn', currentSessionCookie);
                     response.cookie('userName', user.email);
                     response.cookie('userId', user.id);
-                    console.log('User created successfully');
                     response.redirect('/owner/home/' + user.id);
                 } else {
-                    response.send('Try again.');
-                    console.log('User could not be created');
+                    response.render('tryagain');
                 }
             }
         });
@@ -44,9 +42,9 @@ module.exports = (db) => {
         const callback = (err, hashedValue, queryResult) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again');
+                response.render('tryagain');
             } else if (queryResult === false) {
-                response.send('Try again');
+                response.render('tryagain');
             } else if (queryResult[0].password === hashedValue) {
                 let user = queryResult[0];
                 let currentSessionCookie = sha256(user.email + user.id + SALT);
@@ -55,7 +53,7 @@ module.exports = (db) => {
                 response.cookie('userId', user.id);
                 response.redirect('/owner/home/' + user.id);
             } else {
-                response.send('Try again');
+                response.render('tryagain');
             }
         }
         db.owner.ownerLoggedIn(request.body, callback);
@@ -69,7 +67,7 @@ module.exports = (db) => {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn'] && request.cookies['userId'] === request.params['id']) {
                     response.render('owner/home' , { pet: queryResult.rows, id: request.params['id'] });
                 } else {
-                    response.send('Please log into your owner account.');
+                    response.render('tryagain');
                 }
             }
         }
@@ -80,12 +78,12 @@ module.exports = (db) => {
         const callback = (err, queryResult) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again');
+                response.render('tryagain');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn'] && request.cookies['userId'] === request.params['id']) {
                     response.render('owner/editowner', { owner: queryResult });
                 } else {
-                    response.send('Please log into your owner account.');
+                    response.render('tryagain');
                 }
             }
         }
@@ -96,12 +94,12 @@ module.exports = (db) => {
         const callback = (err, queryResult) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again.');
+                response.render('tryagain');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn'] && request.cookies['userId'] === request.params['id']) {
-                    response.send('Account updated!');
+                    response.render('success');
                 } else {
-                    response.send('Please log into your owner account.');
+                    response.render('tryagain');
                 }
             }
         }
@@ -116,12 +114,12 @@ module.exports = (db) => {
         db.owner.ownerPasswordReset(request.body, (err, result) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again.');
+                response.render('tryagain');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn'] && request.cookies['userId'] === request.params['id']) {
-                    response.send('Password updated!');
+                    response.render('success');
                 } else {
-                    response.send('Please log into your owner account.');
+                    response.render('tryagain');
                 }
             }
         });

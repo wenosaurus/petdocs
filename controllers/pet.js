@@ -14,7 +14,7 @@ module.exports = (db) => {
         if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn']) {
             response.render('owner/pet', { id: request.cookies['userId'] });
         } else {
-            response.send('Please log into your owner account.');
+            response.render('tryagain');
         }
     };
 
@@ -22,12 +22,12 @@ module.exports = (db) => {
         db.pet.petAdded(request.body, (err, result) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again.');
+                response.render('tryagain');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn']) {
-                    response.send('Pet added!');
+                    response.render('success');
                 } else {
-                    response.send('Please log into your owner account.');
+                    response.render('tryagain');
                 }
             }
         });
@@ -45,12 +45,12 @@ module.exports = (db) => {
         db.pet.removePet(request.params['id'], (err, result) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again.');
+                response.render('tryagain');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn']) {
-                    response.send('Pet Removed');
+                    response.render('success');
                 } else {
-                    response.send('Please log into your owner account.');
+                    response.render('tryagain');
                 }
             };
         })
@@ -60,12 +60,12 @@ module.exports = (db) => {
         const callback = (err, result) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again');
+                response.render('tryagain');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn']) {
                     response.render('owner/editpet', { pet: result });
                 } else {
-                    response.send('Please log into your owner account.');
+                    response.render('tryagain');
                 }
             }
         }
@@ -76,12 +76,12 @@ module.exports = (db) => {
         const callback = (err, queryResult) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again.');
+                response.render('tryagain');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn']) {
-                    response.send('Pet updated!');
+                    response.render('success');
                 } else {
-                    response.send('Please log into your owner account.');
+                    response.render('tryagain');
                 }
             }
         }
@@ -96,7 +96,7 @@ module.exports = (db) => {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + SALT) === request.cookies['loggedIn']) {
                     response.render('owner/petfiles', { file: queryResult.rows, id: request.cookies['userId'] });
                 } else {
-                    response.send('Please log into your owner account.');
+                    response.render('tryagain');
                 }
             }
         }

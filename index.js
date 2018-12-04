@@ -43,6 +43,14 @@ app.get('/logout', (request, response) => {
     response.clearCookie('userId');
     response.send('You are logged out');
 });
+
+app.get('/success', (request, response) => {
+    response.render('success');
+});
+
+app.get('/tryagain', (request, response) => {
+    response.render('tryagain');
+});
 /**
  * ===================================
  * Listen to requests on port 3000

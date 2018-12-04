@@ -14,7 +14,7 @@ module.exports = (db) => {
         if (sha256(request.cookies['userName'] + request.cookies['userId'] + PEPPER) === request.cookies['loggedIn']) {
             response.render('vet/file', { id: request.cookies['userId'] });
         } else {
-            response.send('Please log into your owner account.');
+            response.render('tryagain');
         }
     };
 
@@ -22,12 +22,12 @@ module.exports = (db) => {
         db.file.fileAdded(request.body, (err, result) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again.');
+                response.render('tryagain');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + PEPPER) === request.cookies['loggedIn']) {
-                    response.send('File added!');
+                    response.render('success');
                 } else {
-                    response.send('Please log into your vet account.');
+                    response.render('tryagain');
                 }
             }
         });
@@ -37,7 +37,7 @@ module.exports = (db) => {
         if (sha256(request.cookies['userName'] + request.cookies['userId'] + PEPPER) === request.cookies['loggedIn']) {
             response.render('vet/deletefile', { file : request.params['id'], user: request.cookies['userId'] })
         } else {
-            response.send('Please log into your owner account.');
+            response.render('tryagain');
         }
     };
 
@@ -45,12 +45,12 @@ module.exports = (db) => {
         db.file.removeFile(request.params['id'], (err, result) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again.');
+                response.render('tryagain');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + PEPPER) === request.cookies['loggedIn']) {
-                    response.send('File removed.');
+                    response.render('success');
                 } else {
-                    response.send('Please log into your vet account.');
+                    response.render('tryagain');
                 }
             };
         })
@@ -60,12 +60,12 @@ module.exports = (db) => {
         const callback = (err, result) => {
             if (err) {
                 console.error('Query error:', err.stack);
-                response.send('Try again');
+                response.render('tryagain');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + PEPPER) === request.cookies['loggedIn']) {
                     response.render('vet/editfile', { file: result });
                 } else {
-                    response.send('Please log into your owner account.');
+                    response.render('tryagain');
                 }
             }
         }
@@ -79,9 +79,9 @@ module.exports = (db) => {
                 response.send('Try again.');
             } else {
                 if (sha256(request.cookies['userName'] + request.cookies['userId'] + PEPPER) === request.cookies['loggedIn']) {
-                    response.send('File updated!');
+                    response.render('success');
                 } else {
-                    response.send('Please log into your vet account.');
+                    response.render('tryagain');
                 }
             }
         }
