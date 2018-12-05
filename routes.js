@@ -1,9 +1,9 @@
-module.exports = (app, db) => {
+module.exports = (app, upload, db) => {
 
   const owners = require('./controllers/owner')(db);
   const pets = require('./controllers/pet')(db);
   const vets = require('./controllers/vet')(db);
-  const files = require('./controllers/file')(db);
+  const files = require('./controllers/file')(upload, db);
 
   /*
    *  =========================================
@@ -43,10 +43,10 @@ module.exports = (app, db) => {
 
   // CRUD file
   app.get('/vet/file', files.fileNew);
-  app.post('/file', files.fileAdded);
+  app.post('/file', upload.single('myFile'), files.fileAdded);
   app.delete('/vet/file/delete/:id', files.removeFile);
   app.get('/vet/file/:id/delete', files.deleteFile);
   app.get('/vet/file/:id/edit', files.fileEdit);
-  app.put('/vet/file/:id', files.fileUpdated);
+  app.put('/vet/file/:id', upload.single('myFile'), files.fileUpdated);
 
 };

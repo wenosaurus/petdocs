@@ -2,7 +2,7 @@ var sha256 = require('js-sha256');
 const SALT = "iam a pet owner";
 const PEPPER = "iam a vet";
 
-module.exports = (db) => {
+module.exports = (upload, db) => {
 
     /**
      * ===========================================

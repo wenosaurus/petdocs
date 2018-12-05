@@ -24,48 +24,74 @@ class EditPet extends React.Component {
         });
 
         return (
-            <html>
+            <html lang="en">
             <head>
             <title>PetDocs</title>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
             <link rel="stylesheet" href="/main.css" />
             <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous" />
             </head>
+
             <body>
-            <header>
-            <div className='logo'>
-            <a href={"/owner/home/" + this.props.pet.owner_id}><img src="/images/logo.png" /></a>
-            </div>
-            <div className='login'>
-            <span className='loginButton'><a href="/logout">Logout</a></span>
-            </div>
-            </header>
-            <nav>
-            <h2>Edit {this.props.pet.name}</h2>
+            <div className="container">
+            <nav className="navbar navbar-light">
+            <a className="navbar-brand" href={"/owner/home/" + this.props.user}>
+            <img src="/images/logo_new.png" class="d-inline-block align-top" alt="" /></a>
+            <a href="/logout"><button className="btn btn-warning navbar-btn" type="button">Logout</button></a>
             </nav>
-            <main>
+
+            <div className="row" id="main">
+            <div className="col-sm-12">
+            <h2>Edit {this.props.pet.name}</h2>
+            <div className="showList">
             <form className="form" method="POST" action={"/owner/pet/" + this.props.pet.id + "?_method=PUT"}>
             <table>
             <tr>
             <td>Pet Name:</td><td><input className="formField" name="name" type="text" defaultValue={this.props.pet.name} /></td></tr>
             <tr><td>Type of Animal:</td>
             <td><select className="formSelect" name="type">
-                {typeList}
+            {typeList}
             </select>
             </td></tr>
             <tr><td>
             Gender:</td>
             <td>
             <select className="formSelect" name="gender">
-                {genderList}
+            {genderList}
             </select></td></tr>
             <tr><td>Birthdate:</td><td><input className="formField" name="birthdate" type="date" defaultValue={petBirthdate} /></td></tr>
             <tr><td>Weight:</td><td><input className="formField" name="weight" type="text" defaultValue={this.props.pet.weight} /></td></tr>
             <tr><td>Upload Photo:</td><td><input className="formField" name="img" type="text" defaultValue={this.props.pet.img} /></td></tr>
             <input name="id" type="hidden" value={this.props.pet.id} />
             </table>
-            <p><input className="formButton" type="submit" value="Submit" /></p>
+            <p><button className="btn btn-primary" type="submit">Submit</button></p>
             </form>
-            </main>
+            </div>
+            </div>
+            </div>
+            </div>
+
+            <footer className="fixed-bottom">
+            <div className="container-fluid">
+            <div className="row">
+            <div className="col-sm-12">
+            <p>
+            <strong>
+            <a href="/">Home</a> | <a href="mailto:contact@wenvo.tech">Contact</a> | <a href="/privacy">Privacy Policy</a></strong>
+            </p>
+            <hr />
+            <p>
+            2018 Made with <i className="fa fa-heart"></i> By <a href="http://www.wenvo.tech">WenVo.Tech</a>
+            </p>
+            </div>
+            </div>
+            </div>
+            </footer>
+
             </body>
             </html>
             );

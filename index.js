@@ -3,6 +3,7 @@ const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const sha256 = require('js-sha256');
 const db = require('./db');
+var multer  = require('multer');
 
 /**
  * ===================================
@@ -13,11 +14,11 @@ const db = require('./db');
 // Init express app
 const app = express();
 
+const upload = multer({ dest: './public/uploads' });
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
-
 
 // Set react-views to be the default view engine
 const reactEngine = require('express-react-views').createEngine();
@@ -25,7 +26,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 app.engine('jsx', reactEngine);
 
-require('./routes')(app, db);
+require('./routes')(app, upload, db);
 
 /**
  * ===================================
@@ -41,7 +42,7 @@ app.get('/logout', (request, response) => {
     response.clearCookie('loggedIn');
     response.clearCookie('userName');
     response.clearCookie('userId');
-    response.send('You are logged out');
+    response.render('loggedout');
 });
 
 app.get('/success', (request, response) => {
@@ -50,6 +51,10 @@ app.get('/success', (request, response) => {
 
 app.get('/tryagain', (request, response) => {
     response.render('tryagain');
+});
+
+app.get('/privacy', (request, response) => {
+    response.render('privacy');
 });
 /**
  * ===================================

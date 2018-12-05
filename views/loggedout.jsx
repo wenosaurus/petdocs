@@ -1,6 +1,6 @@
 var React = require("react");
 
-class NewOwner extends React.Component {
+class LoggedOut extends React.Component {
     render() {
         return (
             <html lang="en">
@@ -14,52 +14,22 @@ class NewOwner extends React.Component {
             <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet" />
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous" />
             </head>
+
             <body>
             <div className="container">
             <nav className="navbar navbar-light">
-            <a className="navbar-brand" href="#">
+            <a className="navbar-brand" href="/">
             <img src="/images/logo_new.png" class="d-inline-block align-top" alt="" />
             </a>
-            <a href="/vet/login"><button className="btn btn-warning navbar-btn" type="button">Vet Login</button></a>
+            <a href="/logout"><button className="btn btn-warning navbar-btn" type="button">Logout</button></a>
             </nav>
             <div className="row" id="main">
-            <div className="col-sm-8">
-            <h1>Get all your pet's records in one place</h1>
-            <p><br />
-            <table>
-            <tr><td>
-            <a href="/owner/login"><button className='btn btn-primary'>Login</button></a>
-            </td>
-            <td>
-            <a href="/owner/signup"><button className='btn btn-warning'>Signup</button></a>
-            </td></tr>
-            </table>
-            </p>
-            </div>
-            <div className="col-sm-4">
-            <img src="images/sidephone.png" align="right" />
-            </div>
-            </div>
-            <div className="row">
-            <div className="col-sm-12" align="center" id="middle">
-            <div className="scrolldown">
-            <a href="#"><i className="fa fa-chevron-down"></i></a>
-            </div>
-            </div>
-            </div>
-            </div>
-            <aside>
-            <div className="container-fluid">
-            <div className="row">
             <div className="col-sm-12">
-            <h3>For Vets</h3>
-            <p><a href="/vet/login">Vet Login</a></p>
-            <p><a href="/vet/signup">Vet Signup</a></p>
+            <h2>Logged Out! See you soon.</h2>
             </div>
             </div>
             </div>
-            </aside>
-            <footer>
+            <footer className="fixed-bottom">
             <div className="container-fluid">
             <div className="row">
             <div className="col-sm-12">
@@ -75,10 +45,11 @@ class NewOwner extends React.Component {
             </div>
             </div>
             </footer>
+
             </body>
             </html>
         );
     }
 };
 
-module.exports = NewOwner;
+module.exports = LoggedOut;

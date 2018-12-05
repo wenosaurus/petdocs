@@ -65,6 +65,10 @@ h4 {
 	color: #648cff;
 }
 
+h5 {
+	color: #648cff;
+}
+
 .formButton {
 	width: 150px;
 	background: #4466c9;
@@ -93,8 +97,7 @@ h4 {
 	padding: 5px;
 	background-color: white;
 	color: black;
-	width: 80%;
-	margin: 5px;
+	margin: 10px 0 105px 0;
 	border-radius: 10px;
 }
 
@@ -110,7 +113,7 @@ footer {
 	background: #353854;
 	width: 100%;
 	margin: 0px;
-	padding: 20px;
+	padding: 10px;
 	text-align: center;
 	color: #b5b5c8;
 	font-size: smaller;
