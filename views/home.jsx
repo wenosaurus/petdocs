@@ -37,7 +37,7 @@ class NewOwner extends React.Component {
             </p>
             </div>
             <div className="col-sm-4">
-            <img src="images/sidephone.png" align="right" />
+            <img src="images/sidephone.png" align="right" id="frontImage" />
             </div>
             </div>
             <div className="row">

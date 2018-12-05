@@ -21,7 +21,7 @@ class LoggedOut extends React.Component {
             <a className="navbar-brand" href="/">
             <img src="/images/logo_new.png" class="d-inline-block align-top" alt="" />
             </a>
-            <a href="/logout"><button className="btn btn-warning navbar-btn" type="button">Logout</button></a>
+            <a href="/owner/login"><button className="btn btn-warning navbar-btn" type="button">Login</button></a>
             </nav>
             <div className="row" id="main">
             <div className="col-sm-12">
